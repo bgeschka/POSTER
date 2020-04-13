@@ -1,0 +1,162 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+	..\FrameXML\UI.xsd">
+<Frame name="POSTER_MainFrame" movable="true" dragable="true">
+	<Scripts>
+		<OnMouseDown>
+			POSTER_MainFrame:StartMoving()
+		</OnMouseDown>
+		<OnMouseUp>
+			POSTER_MainFrame:StopMovingOrSizing()
+		</OnMouseUp>
+		<OnLoad>
+			POSTER_MainFrame:Hide()
+			self:RegisterEvent("ADDON_LOADED");
+      			self.TimeSinceLastUpdate = 0
+		</OnLoad>
+		<OnEvent>
+			if event == "ADDON_LOADED" then
+				POSTER_init()
+			end
+		</OnEvent>
+		<OnUpdate function="POSTER_tick_ex"/>
+	</Scripts>
+
+	<Size>
+		<AbsDimension x="400" y="150"/>
+	</Size>
+	<Anchors>
+		<Anchor point="CENTER"/>
+	</Anchors>
+	<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+		<BackgroundInsets>
+			<AbsInset left="11" right="12" top="12" bottom="11"/>
+		</BackgroundInsets>
+		<TileSize>
+			<AbsValue val="32"/>
+		</TileSize>
+		<EdgeSize>
+			<AbsValue val="32"/>
+		</EdgeSize>
+	</Backdrop>
+
+	<Layers>
+		<Layer level="BACKGROUND">
+			<FontString inherits="GameFontNormal" text="Poster">
+				<Anchors>
+					<Anchor point="TOP">
+						<Offset x="0" y="-10"/>
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="0" y="13"/>
+				</Size>
+			</FontString>
+
+			<FontString inherits="GameFontNormal" text="Channels">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="30" y="-30"/>
+					</Anchor>
+				</Anchors>
+			</FontString>
+			<FontString inherits="GameFontNormal" text="Text">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="30" y="-60"/>
+					</Anchor>
+				</Anchors>
+			</FontString>
+
+			<FontString inherits="GameFontNormal" text="Last Post:">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="30" y="-90"/>
+					</Anchor>
+				</Anchors>
+			</FontString>
+
+			<FontString name="LastPostElapsed" inherits="GameFontNormal" text="Not posted yet">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="100" y="-90"/>
+					</Anchor>
+				</Anchors>
+			</FontString>
+
+		</Layer>
+	</Layers>
+
+	<frames>
+		<EditBox name="Channels" inherits="InputBoxTemplate" multiLine="true" autoFocus="false">
+			<Size>
+				<AbsDimension x="270" y="100"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset x="100" y="-30"/>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnLoad> POSTER_save_ref(self, "channels") </OnLoad>
+				<OnEscapePressed>
+					self:ClearFocus()
+					POSTER_Settings.channels = self:GetText()
+					POSTER_reset();
+				</OnEscapePressed>
+				<OnEnterPressed>
+					self:ClearFocus()
+					POSTER_Settings.channels = self:GetText()
+					POSTER_reset();
+				</OnEnterPressed>
+			</Scripts>
+		</EditBox>
+
+		<EditBox name="Message" inherits="InputBoxTemplate" multiLine="true" autoFocus="false">
+			<Size>
+				<AbsDimension x="270" y="100"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset x="100" y="-60"/>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnLoad> POSTER_save_ref(self, "message") </OnLoad>
+				<OnEscapePressed>
+					self:ClearFocus()
+					POSTER_Settings.message = self:GetText()
+					POSTER_reset();
+				</OnEscapePressed>
+				<OnEnterPressed>
+					self:ClearFocus()
+					POSTER_Settings.message = self:GetText()
+					POSTER_reset();
+				</OnEnterPressed>
+			</Scripts>
+		</EditBox>
+
+		<Button name="$parentButtonClose" inherits="OptionsButtonTemplate" text="Post">
+			<Anchors>
+				<Anchor point="BOTTOM">
+					<Offset x="0" y="16"/>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick> POSTER_dopost() </OnClick>
+			</Scripts>
+		</Button>
+		<Button name="$parentButtonClose" inherits="OptionsButtonTemplate" text="Close">
+			<Anchors>
+				<Anchor point="BOTTOMRIGHT">
+					<Offset x="-12" y="16"/>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick> POSTER_toggleShow(); </OnClick>
+			</Scripts>
+		</Button>
+
+	</frames>
+</Frame>
+</Ui>
+

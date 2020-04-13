@@ -1,0 +1,10 @@
+## Interface: 11303
+## Title: POSTER
+## Author: Pwnlolz(Patchwerk EU)
+## Version: 1.0
+## Notes: POSTER, send chat messages to multiple channels at once, use /poster to open
+## DefaultState: Enabled
+## SavedVariablesPerCharacter: POSTER_Settings
+
+POSTER.lua
+UI/POSTER.xml
